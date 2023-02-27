@@ -1,0 +1,69 @@
+// input is a list of tuples (location, min distance)
+pairs = [...]
+
+// O(n)
+// convert list of tuples into intervals
+intervals = []
+for p in pairs:
+    location = p.start
+    minDist = p.finish
+    l = location - minDist
+    r = location + minDist
+    if l <= 0:
+        // if l is -3, it should really be 819 (821 - 3 + 1)
+        l = 821 + l + 1
+    if r >= 821:
+        r = r - 821
+    interval = (l,r)
+    intervals.append(interval)
+
+// O(n logn)
+// sort by finish time
+sortedIntervals = mergeSort(intervals) 
+
+// O(1) time
+def overlaps(first,second):
+    /*
+        standardize the numbers such that the first.start is 0 and everything else is relative to that
+    */
+    offset = first.start
+    first.start = 0
+    first.finish -= offset
+    second.start -= offset
+    second.finish -= offset
+    if first.finish < 0:
+        first.finish += 821
+    if second.start < 0:
+        second.start += 821
+    if second.finish < 0:
+        second.finish += 821
+    if first.finish < second.start:
+        return true
+    return false
+
+
+// O(n^2)
+ans = -1
+for i in range(len(sortedInterval)):
+    pivot = sortedInterval[i]
+    j = i+1
+    count = 1
+    stack = [pivot]
+    while count < len(sortedInterval)+1:
+        j = j % len(sortedInterval)
+        topOfStack = stack[len(stack) - 1]
+        curr = sortedInterval[j]
+        if not overlaps(topOfStack,curr):
+            stack.append(curr)
+        count += 1
+        j+=1
+    /*
+        because we had length + 1 element in our stack, that extra element can be:
+
+        the pivot element - where the pivot - 1 element overlaps with it (still need to pop to remove redundancy)
+        the pivot - 1 element - where the pivot element overlaps with the pivot - 1 element (need to remove the pivot - 1 element because we force the 
+        pivot element to stay)
+    */
+    stack.pop()
+    ans = max(ans,len(stack))
+return ans

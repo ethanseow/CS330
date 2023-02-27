@@ -1,0 +1,84 @@
+/* 
+    assume pairs to be the input we are given and the adjacency list of such pairs
+    does form a DAG. If it does not form a DAG, such a graph is impossible to complete
+*/
+
+// This is O(m + n) - we are iterating all nodes and each neighbor of the nodes
+def getAdjacencyList(pairs):
+    G = {}
+    for (prereq,task) in pairs:
+        if prereq in G:
+            G[prereq].append(task)
+        else:
+            G[prereq] = [task]
+    return G
+
+// This is O(m+n) - iterating through each node and all its neighbors
+def getInDegCount(G):
+    rev = {}
+    for u in G:
+        rev[u] = 0
+    for u in G:
+        for v in G[u]:
+            if v in rev:
+                rev[v] += 1
+    return rev
+G = getAdjacencyList(pairs)
+R = getInDegCount(G)
+
+/*
+    ans will be in the format
+    [
+        [a,1]
+        [b,2]
+        [c,2]
+        [d,2]
+        [e,1]
+        [f,3]
+    ]
+    for the example
+*/
+ans = []
+zeroDeg = []
+// This is O(n) - iterating through all nodes
+for u in R:
+    // get all indegree of zero nodes
+    // this accounts for solo nodes (no connection to anything)
+    if R[u] == 0:
+        ans.append([u,1]) // u is the task, 1 is the first hour
+        zeroDeg.append(u)
+
+
+// This is O(m+n)
+def getSequence():
+    /* 
+        while this is a nested for loop and may seem like it is O((m+n) * k) because of the while loop
+        this essential iterates through each node and its neighbors which is O(m+n)
+        zeroDeg will never contain a node that has already been "deleted"
+    */    
+    hour = 2
+    while len(ans) < len(G):
+        temp = []
+        for u in zeroDeg:
+            // simulate the deletion of zero degree nodes to form G' 
+            for v in G[u]:
+                R[v] -= 1
+                if R[v] == 0:
+                    // if this node has no indegree because of the deletion, it becomes a zero deg node 
+                    // in the next iteration
+                    temp.append(v)
+
+                    // after the deletion of zero degree nodes, this node has zero degrees and can be added to the answer
+                    ans.append([v,hour])
+        hour += 1
+        zeroDeg = temp
+
+// this will complete the ans array
+getSequence()
+
+// return ans array
+return ans
+        
+
+
+

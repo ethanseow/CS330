@@ -1,0 +1,55 @@
+3// G is an adjacency list for a graph
+
+/*
+let adjList be the adjacency list of G - O(m+n)
+let adj be a dictionary of dictionaries
+
+adj[a][b] = 1 means that a points to b (and not back)
+adj[b][a] = -1 means that a points to b
+
+adj[a][b] = -1 means that b points to a (and not back)
+adj[b][a] = 1 means that b points to a
+*/
+
+
+adj = {}
+dir = 1
+Q = [(s,1)] // queue with random source node s in G and direction of 1 to start (outdegree)
+seen = {} // dictionary with seen nodes
+while Q:
+    p,dir = Q.pop()
+    dir = dir * - 1
+    seen.add(p)
+    for u in G[p]:
+        if p not in adj:
+            adj[p] = {}
+        /*
+            in a previous iteration
+            [a][b] = 1
+            a -> b
+            a should have all outdegrees
+
+            in this current iteration we find that
+            [a][b] = -1 * -1
+            a -> b
+            which states that
+            a should have all outdegrees
+
+            but in this current layer of the BFS, we need to assign adj[p][u] = -1 (line 12), p should have all indegrees
+
+            node a must either contain all indegrees or all outdegrees, not both for it to be a bipartite graph
+
+            thus nodes a and b break the property - we must exit
+        */zs
+        if adj[p][u] == -dir:
+            return "not possible to direct"
+        if not seen:
+            Q.append([u,dir])
+            // have this node be all outdegree or all indegree - all p points to u or all u points to p
+            adj[p][u] = dir
+            adj[u][p] = -dir
+            seen.add(u)
+return adj
+
+
+
