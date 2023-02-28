@@ -67,3 +67,11 @@ for i in range(len(sortedInterval)):
     stack.pop()
     ans = max(ans,len(stack))
 return ans
+
+
+Proof:
+The given problem can be represented as maximum non-conflicting intervals where we do EFTF which would give us the optimal solution. 
+However, for earliest finish time first, it is unknown what is considered the "earliest" finish time. To solve this problem,
+we iterate through every interval, assuming the current interval has the earliest finish time and apply the greedy EFTF algorithm on it.
+For each iteration, we get the EFTF solution assuming our selected interval is the starting interval. We keep a maximum of all our EFTF solutions for each iteration
+to get the overall maximum non-conflicting intervals of all our intervals.
