@@ -53,11 +53,9 @@ Thus we can have a sparse set of size 3
 2b.
 Prove that if we have a sparse set V of size k, all sufficient sets will need to be size greater than or equal to k
 
-Assume for contradiction that sufficient set S has less than k elements. We know that sparse set V crosses all intervals exactly once. The number of intervals
-that sparse set V contains is j. j must be at least k because each slash can slash through 1 or more waiters (and there are k slashes). 
-If S is less than k elements, assume that S has h elements, then we establish that, h < k <= j. If the span of all h waiters is less than the 
-number of j waiters, then 
-
+Assume for contradiction that S is a set less than k. Then that means we have less than k waiter intervals such that they span (0,1). Let us
+call the size of set S as a number j. It is impossible to have visits more than j because then we would have visited a waiter more than once which
+breaks the definition of sparse set. Thus, S must be greater than k
 
 2c.
 prove that if there exists a sufficient set of size k, then all sparse sets must be at most size k
