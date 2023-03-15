@@ -1,0 +1,34 @@
+/*
+    input: s - source node, G - graph
+*/
+answer = {}
+tent = {}
+// pq is priority q of tentative
+// key - tentative distance, value - node
+pq = {}
+
+distances = {}
+parents = {}
+for v in G:
+    answer[v] = true
+    if v != s:
+        tentative[v] = inf
+        pq.insert(inf,v)
+tentative[s] = 0
+pq.insert(0,s)
+parents[s] = None
+for i in range(1,n+1):
+    u_tent, u_node = pq.extract_min()
+    if answer[parent[u_node]] == false:
+        answer[u_node] = false
+    distances[u_node] = u_tent
+    for v in G[u.value]:
+        v_tent = tent[v]
+        if distances[v] == distance[u_node] + G[u_node][v]:
+            answer[v] = false
+        if v_tent > distances[u_node] + G[u_node][v]:
+            tent[v] = distances[u_node] + G[u_node][v]
+            parents[v] = u_node
+            pq.decrease_key(<tent[v],v>, <distances[u_node] + G[u_node][v],v>)
+return answer
+

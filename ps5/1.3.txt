@@ -1,0 +1,40 @@
+/*
+    Given to us:
+    G, s, x, d, parents
+
+    returns:
+    two unique path from s to x
+*/
+
+// O(m) - generate a shortest path given a source node using parents
+def generateShortestPath(source):
+    path = []
+    cur = x
+    while cur != s:
+        // O(1) - prepend (assume it is linkedlist)
+        path.prepend(cur)
+        cur = parents[cur]
+    return path
+
+path1 = generateShortestPath(x)
+// O(m) - flip all directions for G
+G = reversed(G)
+
+// O(m+n)
+def backtrack(source, prevPaths):
+    for inDeg in G[source]:
+        // skip the shortest path parent for last
+        // don't want to generate the same thing as path1
+        if parents[source] == inDeg:
+            continue
+        // found a different shortest path, math adds up
+        // guaranteed to not be same path as path1 due to our continue statement above
+        if d[source] == G[source][inDeg] + d[inDeg]:
+            pathToS = generateShortestPath(inDeg)
+            return prevPaths.extend(pathToS)
+    backtrack(parents[source], prevPaths.prepend(source))
+
+path2 = backtrack(x,[])
+
+return path1, path2
+    
