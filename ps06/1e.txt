@@ -1,0 +1,1 @@
+It computes the binary representation of a number

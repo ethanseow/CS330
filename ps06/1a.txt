@@ -1,0 +1,23 @@
+We will do a proof by induction
+
+For A to terminate, any function call to A must reach A(0)
+
+Base Case:
+A(0) is A(0), therefore this function must terminate
+
+Inductive Hypothesis:
+Assume A(n) and all numbers before n reach A(0)
+
+Inductive Step:
+We will now prove that A(n+1) will also reach A(0)
+
+Case 1: n+1 is odd
+if n+1 is odd, then A(n+1) -> A(2n) because of the conditional "return A(2(n-1)) + 1"
+A(2n) -> A(n) by the condition of "if n is even return A(n/2)"
+Thus A(2n) -> A(n) which reachs A(0)
+
+Case 2:n+1 is even
+if n+1 is even then, A(n+1) -> A((n+1)/2).
+We said that A(n) and all numbers before n reach A(0).
+(n+1)/2 is a number before n.
+Thus A((n+1)/2) reaches A(0)

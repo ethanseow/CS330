@@ -1,0 +1,3 @@
+The depth of the tree is log n
+
+The tree has only 1 leaf

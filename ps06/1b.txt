@@ -1,0 +1,4 @@
+if n is even = T(n) = T(n/2) + O(1)
+if n is odd = T(n) = T(2(n-1)) + O(1) = T(n-1) + O(1) + O(1) where n-1 must be even
+thus generally,
+T(n) = T(n/2) + O(1)
