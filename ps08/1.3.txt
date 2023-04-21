@@ -1,0 +1,48 @@
+subproblems:
+
+
+recurrence relation:
+OPT(i,j) = {
+    OPT(i+1,j-1) and s[i] == s[j] else
+    false
+}
+
+
+proof:
+Base Case:
+OPT(1,1) = True
+s[i] == s[j]
+
+Inductive Hypo:
+OPT(i,j) is true
+
+Inductive Step:
+OPT(i-1,j+1) is correct
+this is because OPT(i-1,j+1) = OPT(i,j) and s[i-1] == s[j+1]
+
+Two cases:
+If i-1 j+1 is palindrome:
+Our algo is correct because OPT(i,j) = true (induct hypo) and s[i-1] == s[j+1] (i-1 j+1 really is palindrome)
+
+If i-1 j+1 is NOT palindrome:
+Our algo is correct because it'll pickup that s[i-1] != s[j+1] and return false
+
+algorithm:
+n = len(s)
+res = []
+dp = [[False]*n for _ in range(n)]
+for i in range(n-1, -1, -1):
+    for j in range(i, n):
+        if s[i] == s[j] and (j-i <= 2 or dp[i+1][j-1]):
+            dp[i][j] = True
+            res.append(s[i:j+1])
+return res
+
+runtime:
+O(n^2) - our nested for loop finds every substring so it essentially
+does the iterations of
+1 2 3 4 5 6 ... len(s)
+2 3 4 5 6 ... len(s)
+...
+6 ... len(s)
+and because we have a dp memoization table of n^2, it can at most process n^2 iterations before subsequent checks become O(1)

@@ -1,0 +1,30 @@
+/*
+    given - C
+    output - D
+*/
+def find_ans(C):
+    // O(n^2)
+    // have this be the same size as C but with all elements being inf
+    placeholderC = [inf for element in C]
+
+    // O(n)
+    // have M be a 3d matrix with C being the first element and the rest being placeholderC elements
+    M = [C] + [placeholderC for i in range(len(C)-1)]
+
+    // total number of edges in our path
+    for i in range(1,len(C)):
+        for j in range(len(C)):
+            for k in range(len(C)):
+                M[j][k][i] = min(
+                    M[j][k][i-1],
+                    M[j][i][i-1] + M[i][k][i-1]
+                )
+    // return the last slice of M (we use)
+    return M[-1]
+
+
+Recurrence Relation
+OPT(a,c,k) = min(
+    for all neighbors of a -> b : edge(a,b) + OPT(b,c,k-1),
+    OPT(a,c,k-1)
+)

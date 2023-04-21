@@ -1,0 +1,108 @@
+1.2
+subproblems:
+if we divide the string into two parts, then we sum up the minimum cuts in each part
+we do this for each part until we have reached a substring that is a palindrome, in which case we return a 1 for a cut if it is a palindrome
+our division of the string can result in any substring half of the entire string, thus we have to iterate from
+0 to len(s)
+
+recursive formula + correctness:
+OPT(i,j) = {
+    1 - s[i:j+1] is palindrome
+    min(
+        n for n in range(i,j) -> OPT(i,n) + OPT(n+1,j)
+    )
+}
+
+base case:
+opt(0,0) = 1
+this is true because it is a palindrome (1 letter)
+
+recursive hypothesis:
+OPT(i,j) returns the minimum cuts from i to j
+OPT(j+1,k) returns the minimum cuts from j+1 to k
+
+recursive step:
+OPT(i,k)
+we know that OPT(i,j) will be correct because 
+OPT(i,k) = min(
+    g for g in range(n,k) -> OPT(i,g) + OPT(g+1,k) 
+)
+
+because we know that OPT(i,j) is correct and so is OPT(j+1,k), OPT(i,g) and OPT(g+1,k) must both be correct as
+i,g and g+1,k are within the ranges of i,j and j+1,k for all g
+
+
+
+algorithm:
+def minCut(self, s: str) -> int:
+    table = S
+    cuts = []
+    def dp(i,j):      
+        if table[i][j] == -1:
+            c = -1
+            ret = 2001
+            for n in range(i,j):
+                cut = dp(i,n) + dp(n+1,j)
+                if cut < ret:
+                    ret = cut
+                    c = n
+            table[i][j] = ret
+            if j == len(s) - 1:
+                cuts.append(c)
+        return table[i][j]
+    numCuts = dp(0,len(s)-1) - 1
+    cutPlacement = [cuts[0]]
+    cuts.reverse()
+    i = cuts[0]
+    while i < len(cuts)-1:
+        i = cuts[i+1]
+        cutPlacement.append(i)
+    return numCuts, cutPlacement
+
+runtime:
+O(n^2) - we know it is O(n^2) because we are using a memoization table of O(n^2) space. 
+Once our table has been filled up (which takes at most O(n^2) steps), any further look up will be O(1).
+We know that our table will be filled up with at most O(n^2) steps because we find every possible
+substring in the entire input string (the for loop containing n in range(i,j)). The total number of substrings
+in a string is n^2 therefore our running time is O(n^2)
+
+cut placement proof:
+algorithm:
+def dp(i,j):      
+    if table[i][j] == -1:
+        c = -1
+        ret = 2001
+        for n in range(i,j):
+            cut = dp(i,n) + dp(n+1,j)
+            if cut < ret:
+                ret = cut
+                c = n
+        table[i][j] = ret
+        if j == len(s) - 1:
+            cuts.append(c)
+    return table[i][j]
+numCuts = dp(0,len(s)-1) - 1
+cutPlacement = [cuts[0]]
+cuts.reverse()
+i = cuts[0]
+while i < len(cuts)-1:
+    i = cuts[i+1]
+    cutPlacement.append(i)
+return numCuts, cutPlacement
+
+our cutPlacement is the answer to this part of the question
+
+proof:
+our cuts array finds the best cut placement for substrings from [0,len(s)] , [1,len(s)] ... [len(s)-1,len(s)]
+thus, we iterate from 0 to len(s) to find the first cut, then from that cut, we get a new substring.
+We look up that substring in our cuts array to find its first cut and so on and so forth.
+This generates all cut placements because we essentially backtrack the best cut placement for each substring and then going to that
+cut placement, thus getting all the optimal cut placements.
+
+
+runtime:
+O(n)
+our cuts array finds the first cut placement for substrings from [0,len(s)] , [1,len(s)] ... [len(s)-1,len(s)]
+thus, we iterate from 0 to len(s) to find the first cut, then from that cut, we get a new substring.
+We look up that substring in our cuts array to find its first cut and so on and so forth.
+Thus, at most we look through the entire cuts array which is of size n
