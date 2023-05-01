@@ -1,0 +1,9 @@
+The number of edges and nodes in the graph as a function of rails (m) and stations (n) is
+edges: (n-2) + m
+nodes: 2(n - 2) + 2
+
+edges is this amount because we are splitting each node into an in-node and out-node with each node having an edge in between, except for s and t
+Therefore, we have a total of n-2 edges. Then, we tack on the rails already present in the graph.
+
+nodes is the amount because for each node, we split it in two except s and t. Therefore, we will have n - 2 splits, resulting in 2(n-2) nodes.
+We add 2 because we include s and t

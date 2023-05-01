@@ -1,0 +1,53 @@
+Algorithm:
+ret = []
+f = FordFulkerson(G,V,E,s,t,c,f)
+
+Gf = residualGraph(G,V,E,s,t,c,f)
+
+// Gf is the residual graph after the Ford-Fulkerson algorithm (calculable through the given f and subtracting each capacity)
+// G is modified to contain edge flows after the Ford-Fulkerson algorithm 
+
+// all nodes reachable from s through the residual residualGraph (Gf)
+residualReach= BFS(Gf,s)
+
+for e in E:
+    (u,v) = e
+    if u in residualReach and v not in residualReach:
+        ret.append(u)
+return ret
+
+proof:
+To get the minimum number of stations to send cops to, we simply need to find the min-cut edges and then find side of the edge
+We need to look for the min-cut edges (edges that go from A to B according to def of min-cut).
+We will prove by contradiction that those min-cut edges must have a residual of 0 and a flow of max capacity.
+Assume that a min-cut edge has a residual of more than 0 and thus a flow of non-max capacity. This means that there exists
+a path s to t through this edge that contains an edge that is a bottle neck (which is why we have a residual left over). Therefore,
+we have found an edge such that we have a lower capacity than our current min-cut set. Therefore, this is not a min-cut edge.
+
+After proving that a min-cut edge must have a residual 0 and flow of max capacity, we simply need to find all edges that  
+have a node that is unreachable from a residual edge (because the residual is 0) but have an node that is reachable from the residual edges
+(it is reachable from non-bottleneck edges)
+
+Our algorithm clearly does this as we see try to find edges that have a node in residualReach and a node not in residual reach
+
+We also know that this is the MINIMUM number of stations because each edge capacity is one, therefore, the number for the max-flow
+must equal the number of min-cut edges from A to B as there no way to construct a min cut of same capacity but with a different amount of edges
+as each edge has capacity of one
+
+runtime:
+O(m * m)
+
+where m is the total number of edges
+we know this to be true because we are running ford fulkerson which is O(mC), where C is the total capacity of the entire graph
+we know that each edge has weight 1, therefore, our total capacity is the number of edges, which is (n-2) + m. This becomes
+O(m*n - 2m + m*m). We know that m >= n - 1 therefore, the m * m is more than m * n. Therefore it is O(m * m)
+
+All other functions are less than O(m*m)
+
+residualGraph - O(m+n) because we go through each node and calculate the residual based on the FF flow that we calculated
+BFS is O(m+n)
+for e in E ... is O(m) because we iterate through each edge
+
+
+
+

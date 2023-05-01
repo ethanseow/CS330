@@ -1,0 +1,9 @@
+A min-cut creates two sets of edges of our graph, set A and set B.
+The edges from set A to set B are the min-cut edges and their capacities are the maximum flow
+Therefore, edge (u,v) can be one of three scenarios:
+
+edge is in A -> max-flow is unchanged
+edge is in B -> max-flow is unchanged
+edge is from A to B -> decreasing min-cut/max-flow by 1
+
+where A and B are all possible sets created by the min-cut algorithm

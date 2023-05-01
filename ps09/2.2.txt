@@ -1,0 +1,3 @@
+The network flow graph can be expressed by each set of rails from station A to station b being an edge in the graph.
+However, every station not Southton City or Trenton City will be split into two nodes, one for rails that are going into that
+station and ones that are going out. There will be an edge in between these such nodes. All edges will have weight of one

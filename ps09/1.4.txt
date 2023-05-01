@@ -1,0 +1,21 @@
+run FF one more time with the decreased edge
+
+Algorithm:
+Run FF one more time with the decreased edge residual at max-capacity and the flow to be 0
+or
+f(u,v) = 0
+c(u,v) = decreased (given to us in the problem)
+Gf[u][v] = c(u,v) // residual is at max-capacity
+P = findAugmentingPath(Gf,s,t)
+f = Augment(f,P)
+
+Proof:
+To update the maximum flow and all flows in the graph, we assume that we have never touched the decreased edge before (residual is at max-capacity)
+and allow FF to find and update an augmenting path for us. We know that it will because there are some leftover flow that can
+be utilized (our resetted decreased edge)
+
+Runtime:
+O(m+n)
+we know that Augment(f,P) is O(n) (path has at most n-1 edges)
+findAugmentingPath(Gf,s,t) find a path from s to t that is an augmenting path - this is BFS/DFS which is O(m+n)
+the rest are constant O(1) assertions

@@ -1,0 +1,38 @@
+Algo:
+Gf = residualGraph(G,V,E,s,t,c,f)
+
+// Gf is the residual graph after the Ford-Fulkerson algorithm (calculable through the given f and subtracting each capacity)
+// G is modified to contain edge flows after the Ford-Fulkerson algorithm 
+
+// all nodes reachable from s through the residual residualGraph (Gf)
+residualReach= BFS(Gf,s)
+
+
+for e in E:
+    (u,v) = e
+    if u in residualReach and v not in residualReach:
+        return e
+
+Runtime:
+O(m+n)
+
+The residual graph calculation can be found by going through each edge in f and subtracting it from the same edge in c (residual = capacity - flow).
+This is O(m)
+
+BFS takes O(m+n)
+
+for e in E ... is O(m) by its very nature of iterating through each edge in the graph
+
+
+Proof:
+To find a tight edge, we need to look for the min-cut edges (edges that go from A to B according to def of min-cut).
+We will prove by contradiction that those min-cut edges must have a residual of 0 and a flow of max capacity.
+Assume that a min-cut edge has a residual of more than 0 and thus a flow of non-max capacity. This means that there exists
+a path s to t through this edge that contains an edge that is a bottle neck (which is why we have a residual left over). Therefore,
+we have found an edge such that we have a lower capacity than our current min-cut set. Therefore, this is not a min-cut edge.
+
+After proving that a min-cut edge must have a residual 0 and flow of max capacity, we simply need to find all edges that  
+have a node that is unreachable from a residual edge (because the residual is 0) but have an node that is reachable from the residual edges
+(it is reachable from non-bottleneck edges)
+
+Our algorithm clearly does this as we see try to find edges that have a node in residualReach and a node not in residual reach
