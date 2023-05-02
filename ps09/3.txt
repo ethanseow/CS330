@@ -1,0 +1,14 @@
+1a. 1
+1b. 3
+1c. 
+
+2. 
+nodes = n
+edges = (n-1) * d
+n-1 because we exclude sink node
+FF is O(mC) where m is the number of edges (n -1) * d and C is the capacity of the total network flow
+we know that capacity of each edge is 1, so we have a total capacity of the total number of edges in the graph - m
+
+Therefore, our running time is O(m * m) or O( ((n-1) * d) * ((n-1)*d) )
+
+
